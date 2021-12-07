@@ -18,6 +18,7 @@ use serde::{Deserialize, Serialize};
     feature = "enable-rkyv",
     archive_attr(derive(Copy, Clone, PartialEq, Eq, Hash, PartialOrd, Ord, Debug))
 )]
+#[cfg_attr(feature = "enable-rkyv", archive_attr(derive(bytecheck::CheckBytes)))]
 pub struct LocalFunctionIndex(u32);
 entity_impl!(LocalFunctionIndex);
 #[cfg(feature = "enable-rkyv")]
@@ -46,6 +47,7 @@ entity_impl!(LocalMemoryIndex);
     feature = "enable-rkyv",
     archive_attr(derive(Copy, Clone, PartialEq, Eq, Hash, PartialOrd, Ord, Debug))
 )]
+#[cfg_attr(feature = "enable-rkyv", archive_attr(derive(bytecheck::CheckBytes)))]
 pub struct LocalGlobalIndex(u32);
 entity_impl!(LocalGlobalIndex);
 #[cfg(feature = "enable-rkyv")]
@@ -62,6 +64,7 @@ entity_impl!(ArchivedLocalGlobalIndex);
     feature = "enable-rkyv",
     archive_attr(derive(Copy, Clone, PartialEq, Eq, Hash, PartialOrd, Ord, Debug))
 )]
+#[cfg_attr(feature = "enable-rkyv", archive_attr(derive(bytecheck::CheckBytes)))]
 pub struct FunctionIndex(u32);
 entity_impl!(FunctionIndex);
 #[cfg(feature = "enable-rkyv")]
@@ -78,6 +81,7 @@ entity_impl!(ArchivedFunctionIndex);
     feature = "enable-rkyv",
     archive_attr(derive(Copy, Clone, PartialEq, Eq, Hash, PartialOrd, Ord, Debug))
 )]
+#[cfg_attr(feature = "enable-rkyv", archive_attr(derive(bytecheck::CheckBytes)))]
 pub struct TableIndex(u32);
 entity_impl!(TableIndex);
 #[cfg(feature = "enable-rkyv")]
@@ -94,6 +98,7 @@ entity_impl!(ArchivedTableIndex);
     feature = "enable-rkyv",
     archive_attr(derive(Copy, Clone, PartialEq, Eq, Hash, PartialOrd, Ord, Debug))
 )]
+#[cfg_attr(feature = "enable-rkyv", archive_attr(derive(bytecheck::CheckBytes)))]
 pub struct GlobalIndex(u32);
 entity_impl!(GlobalIndex);
 #[cfg(feature = "enable-rkyv")]
@@ -110,6 +115,7 @@ entity_impl!(ArchivedGlobalIndex);
     feature = "enable-rkyv",
     archive_attr(derive(Copy, Clone, PartialEq, Eq, Hash, PartialOrd, Ord, Debug))
 )]
+#[cfg_attr(feature = "enable-rkyv", archive_attr(derive(bytecheck::CheckBytes)))]
 pub struct MemoryIndex(u32);
 entity_impl!(MemoryIndex);
 #[cfg(feature = "enable-rkyv")]
@@ -126,6 +132,7 @@ entity_impl!(ArchivedMemoryIndex);
     feature = "enable-rkyv",
     archive_attr(derive(Copy, Clone, PartialEq, Eq, Hash, PartialOrd, Ord, Debug))
 )]
+#[cfg_attr(feature = "enable-rkyv", archive_attr(derive(bytecheck::CheckBytes)))]
 pub struct SignatureIndex(u32);
 entity_impl!(SignatureIndex);
 #[cfg(feature = "enable-rkyv")]
@@ -142,6 +149,7 @@ entity_impl!(ArchivedSignatureIndex);
     feature = "enable-rkyv",
     archive_attr(derive(Copy, Clone, PartialEq, Eq, Hash, PartialOrd, Ord, Debug))
 )]
+#[cfg_attr(feature = "enable-rkyv", archive_attr(derive(bytecheck::CheckBytes)))]
 pub struct DataIndex(u32);
 entity_impl!(DataIndex);
 #[cfg(feature = "enable-rkyv")]
@@ -158,6 +166,7 @@ entity_impl!(ArchivedDataIndex);
     feature = "enable-rkyv",
     archive_attr(derive(Copy, Clone, PartialEq, Eq, Hash, PartialOrd, Ord, Debug))
 )]
+#[cfg_attr(feature = "enable-rkyv", archive_attr(derive(bytecheck::CheckBytes)))]
 pub struct ElemIndex(u32);
 entity_impl!(ElemIndex);
 #[cfg(feature = "enable-rkyv")]
@@ -174,6 +183,7 @@ entity_impl!(ArchivedElemIndex);
     feature = "enable-rkyv",
     archive_attr(derive(Copy, Clone, PartialEq, Eq, Hash, PartialOrd, Ord, Debug))
 )]
+#[cfg_attr(feature = "enable-rkyv", archive_attr(derive(bytecheck::CheckBytes)))]
 pub struct CustomSectionIndex(u32);
 entity_impl!(CustomSectionIndex);
 #[cfg(feature = "enable-rkyv")]
@@ -190,6 +200,7 @@ entity_impl!(ArchivedCustomSectionIndex);
     feature = "enable-rkyv",
     archive_attr(derive(Copy, Clone, PartialEq, Eq, Hash, PartialOrd, Ord, Debug))
 )]
+#[cfg_attr(feature = "enable-rkyv", archive_attr(derive(bytecheck::CheckBytes)))]
 pub enum ExportIndex {
     /// Function export.
     Function(FunctionIndex),
@@ -212,6 +223,7 @@ pub enum ExportIndex {
     feature = "enable-rkyv",
     archive_attr(derive(Copy, Clone, PartialEq, Eq, Hash, PartialOrd, Ord, Debug))
 )]
+#[cfg_attr(feature = "enable-rkyv", archive_attr(derive(bytecheck::CheckBytes)))]
 pub enum ImportIndex {
     /// Function import.
     Function(FunctionIndex),

@@ -25,6 +25,7 @@ use wasmer_types::{FunctionIndex, LocalFunctionIndex, SignatureIndex};
     feature = "enable-rkyv",
     derive(RkyvSerialize, RkyvDeserialize, Archive)
 )]
+#[cfg_attr(feature = "enable-rkyv", archive_attr(derive(bytecheck::CheckBytes)))]
 #[derive(Debug, Clone, PartialEq, Eq, Default, MemoryUsage)]
 pub struct CompiledFunctionFrameInfo {
     /// The traps (in the function body).
@@ -42,6 +43,7 @@ pub struct CompiledFunctionFrameInfo {
     feature = "enable-rkyv",
     derive(RkyvSerialize, RkyvDeserialize, Archive)
 )]
+#[cfg_attr(feature = "enable-rkyv", archive_attr(derive(bytecheck::CheckBytes)))]
 #[derive(Debug, Clone, PartialEq, Eq, MemoryUsage)]
 pub struct FunctionBody {
     /// The function body bytes.
@@ -62,6 +64,7 @@ pub struct FunctionBody {
     feature = "enable-rkyv",
     derive(RkyvSerialize, RkyvDeserialize, Archive)
 )]
+#[cfg_attr(feature = "enable-rkyv", archive_attr(derive(bytecheck::CheckBytes)))]
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct CompiledFunction {
     /// The function body.
@@ -94,6 +97,7 @@ pub type CustomSections = PrimaryMap<SectionIndex, CustomSection>;
     feature = "enable-rkyv",
     derive(RkyvSerialize, RkyvDeserialize, Archive)
 )]
+#[cfg_attr(feature = "enable-rkyv", archive_attr(derive(bytecheck::CheckBytes)))]
 #[derive(Debug, PartialEq, Eq, Clone, MemoryUsage)]
 pub struct Dwarf {
     /// The section index in the [`Compilation`] that corresponds to the exception frames.
@@ -115,6 +119,7 @@ impl Dwarf {
     feature = "enable-rkyv",
     derive(RkyvSerialize, RkyvDeserialize, Archive)
 )]
+#[cfg_attr(feature = "enable-rkyv", archive_attr(derive(bytecheck::CheckBytes)))]
 #[derive(Debug, PartialEq, Eq, Clone, MemoryUsage)]
 pub struct TrampolinesSection {
     /// SectionIndex for the actual Trampolines code

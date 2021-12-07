@@ -26,6 +26,7 @@ use serde::{Deserialize, Serialize};
     feature = "enable-rkyv",
     derive(RkyvSerialize, RkyvDeserialize, Archive)
 )]
+#[cfg_attr(feature = "enable-rkyv", archive_attr(derive(bytecheck::CheckBytes)))]
 pub enum Type {
     /// Signed 32 bit integer.
     I32,
@@ -71,6 +72,7 @@ impl fmt::Display for Type {
     feature = "enable-rkyv",
     derive(RkyvSerialize, RkyvDeserialize, Archive)
 )]
+#[cfg_attr(feature = "enable-rkyv", archive_attr(derive(bytecheck::CheckBytes)))]
 /// The WebAssembly V128 type
 pub struct V128(pub(crate) [u8; 16]);
 
@@ -250,6 +252,7 @@ impl ExternType {
     feature = "enable-rkyv",
     derive(RkyvSerialize, RkyvDeserialize, Archive)
 )]
+#[cfg_attr(feature = "enable-rkyv", archive_attr(derive(bytecheck::CheckBytes)))]
 pub struct FunctionType {
     /// The parameters of the function
     params: Box<[Type]>,
@@ -339,6 +342,7 @@ impl From<&FunctionType> for FunctionType {
     feature = "enable-rkyv",
     derive(RkyvSerialize, RkyvDeserialize, Archive)
 )]
+#[cfg_attr(feature = "enable-rkyv", archive_attr(derive(bytecheck::CheckBytes)))]
 pub enum Mutability {
     /// The global is constant and its value does not change
     Const,
@@ -379,6 +383,7 @@ impl From<Mutability> for bool {
     feature = "enable-rkyv",
     derive(RkyvSerialize, RkyvDeserialize, Archive)
 )]
+#[cfg_attr(feature = "enable-rkyv", archive_attr(derive(bytecheck::CheckBytes)))]
 pub struct GlobalType {
     /// The type of the value stored in the global.
     pub ty: Type,
@@ -426,6 +431,7 @@ impl fmt::Display for GlobalType {
     feature = "enable-rkyv",
     derive(RkyvSerialize, RkyvDeserialize, Archive)
 )]
+#[cfg_attr(feature = "enable-rkyv", archive_attr(derive(bytecheck::CheckBytes)))]
 pub enum GlobalInit {
     /// An `i32.const`.
     I32Const(i32),
@@ -486,6 +492,7 @@ impl GlobalInit {
     feature = "enable-rkyv",
     derive(RkyvSerialize, RkyvDeserialize, Archive)
 )]
+#[cfg_attr(feature = "enable-rkyv", archive_attr(derive(bytecheck::CheckBytes)))]
 pub struct TableType {
     /// The type of data stored in elements of the table.
     pub ty: Type,
@@ -529,6 +536,7 @@ impl fmt::Display for TableType {
     feature = "enable-rkyv",
     derive(RkyvSerialize, RkyvDeserialize, Archive)
 )]
+#[cfg_attr(feature = "enable-rkyv", archive_attr(derive(bytecheck::CheckBytes)))]
 pub struct MemoryType {
     /// The minimum number of pages in the memory.
     pub minimum: Pages,

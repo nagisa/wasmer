@@ -25,6 +25,7 @@ cfg-if = "1.0"
 backtrace = "0.3"
 serde = { version = "1.0", features = ["derive", "rc"] }
 rkyv = { version = "0.7.20", optional = true }
+bytecheck = { version = "0.6", optional = true }
 loupe = { version = "0.1", features = ["enable-indexmap"] }
 
 [target.'cfg(target_os = "windows")'.dependencies]
@@ -38,5 +39,5 @@ maintenance = { status = "actively-developed" }
 
 [features]
 default = []
-enable-rkyv = ["rkyv"]
+enable-rkyv = ["rkyv", "bytecheck"]
 avoid-tls-signals = []

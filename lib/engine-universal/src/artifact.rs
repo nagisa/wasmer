@@ -9,6 +9,7 @@ use crate::serialize::SerializableModule;
 use enumset::EnumSet;
 use loupe::MemoryUsage;
 use std::sync::{Arc, Mutex};
+use std::convert::TryFrom;
 use wasmer_compiler::{CompileError, CpuFeature, Features, Triple};
 #[cfg(feature = "compiler")]
 use wasmer_compiler::{CompileModuleInfo, ModuleEnvironment, ModuleMiddlewareChain};
@@ -40,10 +41,25 @@ impl<'a> UniversalArtifactView<'a> {
         bytes.starts_with(MAGIC_HEADER)
     }
 
-    pub unsafe fn new(data: &[u8]) -> Result<Self, DeserializeError> {
-        unsafe {
-            Ok(Self { module: rkyv::archived_root(data) })
+    pub fn new(data: &'a [u8]) -> Result<Self, DeserializeError> {
+        if !Self::is_deserializable(data) {
+            return Err(DeserializeError::Incompatible(
+                "The provided bytes are not wasmer-universal".to_string(),
+            ));
         }
+        let mut inner_bytes = &data[SERIALIZED_METADATA_LENGTH_OFFSET..];
+        let metadata_len = leb128::read::unsigned(&mut inner_bytes).map_err(|_e| {
+            DeserializeError::CorruptedBinary("Can't read metadata size".to_string())
+        })?;
+        let metadata_len = usize::try_from(metadata_len).map_err(|_| {
+            DeserializeError::CorruptedBinary("metadata size isn't usize".to_string())
+        })?;
+        let data = &data[SERIALIZED_METADATA_CONTENT_OFFSET..];
+        Ok(Self {
+            module: rkyv::check_archived_root::<SerializableModule>(data).map_err(|e| {
+                DeserializeError::CorruptedBinary(e.to_string())
+            })?,
+        })
     }
 }
 
@@ -159,23 +175,8 @@ impl UniversalArtifact {
         universal: &UniversalEngine,
         bytes: &[u8],
     ) -> Result<Self, DeserializeError> {
-        if !Self::is_deserializable(bytes) {
-            return Err(DeserializeError::Incompatible(
-                "The provided bytes are not wasmer-universal".to_string(),
-            ));
-        }
-
-        let mut inner_bytes = &bytes[SERIALIZED_METADATA_LENGTH_OFFSET..];
-
-        let metadata_len = leb128::read::unsigned(&mut inner_bytes).map_err(|_e| {
-            DeserializeError::CorruptedBinary("Can't read metadata size".to_string())
-        })?;
-        let metadata_slice: &[u8] = std::slice::from_raw_parts(
-            &bytes[SERIALIZED_METADATA_CONTENT_OFFSET] as *const u8,
-            metadata_len as usize,
-        );
-
-        let serializable = SerializableModule::deserialize(metadata_slice)?;
+        let view = UniversalArtifactView::new(bytes)?;
+        let serializable = SerializableModule::deserialize_from_archive(view.module)?;
         Self::from_parts(&mut universal.inner_mut(), serializable)
             .map_err(DeserializeError::Compiler)
     }
@@ -349,17 +350,14 @@ impl Artifact for UniversalArtifact {
 
     fn serialize(&self) -> Result<Vec<u8>, SerializeError> {
         // Prepend the header.
-        let mut serialized = Self::MAGIC_HEADER.to_vec();
-
+        let mut serialized = MAGIC_HEADER.to_vec();
         serialized.resize(SERIALIZED_METADATA_CONTENT_OFFSET, 0);
         let mut writable_leb = &mut serialized[SERIALIZED_METADATA_LENGTH_OFFSET..];
         let serialized_data = self.serializable.serialize()?;
         let length = serialized_data.len();
         leb128::write::unsigned(&mut writable_leb, length as u64).expect("Should write number");
-
         let offset = pad_and_extend::<SerializableModule>(&mut serialized, &serialized_data);
         assert_eq!(offset, SERIALIZED_METADATA_CONTENT_OFFSET);
-
         Ok(serialized)
     }
 }

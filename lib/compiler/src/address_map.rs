@@ -15,6 +15,7 @@ use serde::{Deserialize, Serialize};
     feature = "enable-rkyv",
     derive(RkyvSerialize, RkyvDeserialize, Archive)
 )]
+#[cfg_attr(feature = "enable-rkyv", archive_attr(derive(bytecheck::CheckBytes)))]
 #[derive(Debug, Clone, PartialEq, Eq, MemoryUsage)]
 pub struct InstructionAddressMap {
     /// Original source location.
@@ -33,6 +34,7 @@ pub struct InstructionAddressMap {
     feature = "enable-rkyv",
     derive(RkyvSerialize, RkyvDeserialize, Archive)
 )]
+#[cfg_attr(feature = "enable-rkyv", archive_attr(derive(bytecheck::CheckBytes)))]
 #[derive(Debug, Clone, PartialEq, Eq, Default, MemoryUsage)]
 pub struct FunctionAddressMap {
     /// Instructions maps.

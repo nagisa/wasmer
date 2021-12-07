@@ -28,6 +28,7 @@ pub const WASM_MIN_PAGES: u32 = 0x100;
     feature = "enable-rkyv",
     derive(RkyvSerialize, RkyvDeserialize, Archive)
 )]
+#[cfg_attr(feature = "enable-rkyv", archive_attr(derive(bytecheck::CheckBytes)))]
 pub struct Pages(pub u32);
 
 impl Pages {

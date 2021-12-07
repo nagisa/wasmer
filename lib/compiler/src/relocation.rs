@@ -28,6 +28,7 @@ use wasmer_vm::libcalls::LibCall;
     feature = "enable-rkyv",
     derive(RkyvSerialize, RkyvDeserialize, Archive)
 )]
+#[cfg_attr(feature = "enable-rkyv", archive_attr(derive(bytecheck::CheckBytes)))]
 #[derive(Copy, Clone, Debug, PartialEq, Eq, MemoryUsage)]
 pub enum RelocationKind {
     /// absolute 4-byte
@@ -96,6 +97,7 @@ impl fmt::Display for RelocationKind {
     feature = "enable-rkyv",
     derive(RkyvSerialize, RkyvDeserialize, Archive)
 )]
+#[cfg_attr(feature = "enable-rkyv", archive_attr(derive(bytecheck::CheckBytes)))]
 #[derive(Debug, Clone, PartialEq, Eq, MemoryUsage)]
 pub struct Relocation {
     /// The relocation kind.
@@ -114,6 +116,7 @@ pub struct Relocation {
     feature = "enable-rkyv",
     derive(RkyvSerialize, RkyvDeserialize, Archive)
 )]
+#[cfg_attr(feature = "enable-rkyv", archive_attr(derive(bytecheck::CheckBytes)))]
 #[derive(Debug, Copy, Clone, PartialEq, Eq, MemoryUsage)]
 pub enum RelocationTarget {
     /// A relocation to a function defined locally in the wasm (not an imported one).

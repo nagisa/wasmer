@@ -24,6 +24,7 @@ use serde::{Deserialize, Serialize};
     feature = "enable-rkyv",
     derive(RkyvSerialize, RkyvDeserialize, Archive)
 )]
+#[cfg_attr(feature = "enable-rkyv", archive_attr(derive(bytecheck::CheckBytes)))]
 #[derive(Debug, Clone, PartialEq, Eq, MemoryUsage)]
 pub enum CompiledFunctionUnwindInfo {
     /// Windows UNWIND_INFO.

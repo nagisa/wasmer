@@ -24,6 +24,7 @@ use wasmer_types::entity::entity_impl;
     feature = "enable-rkyv",
     archive_attr(derive(Copy, Clone, PartialEq, Eq, Hash, PartialOrd, Ord, Debug))
 )]
+#[cfg_attr(feature = "enable-rkyv", archive_attr(derive(bytecheck::CheckBytes)))]
 #[derive(Copy, Clone, PartialEq, Eq, Hash, PartialOrd, Ord, Debug, MemoryUsage)]
 pub struct SectionIndex(u32);
 
@@ -40,6 +41,7 @@ entity_impl!(ArchivedSectionIndex);
     feature = "enable-rkyv",
     derive(RkyvSerialize, RkyvDeserialize, Archive)
 )]
+#[cfg_attr(feature = "enable-rkyv", archive_attr(derive(bytecheck::CheckBytes)))]
 #[derive(Debug, Clone, PartialEq, Eq, MemoryUsage)]
 pub enum CustomSectionProtection {
     /// A custom section with read permission.
@@ -58,6 +60,7 @@ pub enum CustomSectionProtection {
     feature = "enable-rkyv",
     derive(RkyvSerialize, RkyvDeserialize, Archive)
 )]
+#[cfg_attr(feature = "enable-rkyv", archive_attr(derive(bytecheck::CheckBytes)))]
 #[derive(Debug, Clone, PartialEq, Eq, MemoryUsage)]
 pub struct CustomSection {
     /// Memory protection that applies to this section.
@@ -81,6 +84,7 @@ pub struct CustomSection {
     feature = "enable-rkyv",
     derive(RkyvSerialize, RkyvDeserialize, Archive)
 )]
+#[cfg_attr(feature = "enable-rkyv", archive_attr(derive(bytecheck::CheckBytes)))]
 #[derive(Debug, Clone, PartialEq, Eq, Default, MemoryUsage)]
 pub struct SectionBody(#[cfg_attr(feature = "enable-serde", serde(with = "serde_bytes"))] Vec<u8>);
 

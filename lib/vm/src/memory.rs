@@ -69,6 +69,7 @@ pub enum MemoryError {
     feature = "enable-rkyv",
     derive(RkyvSerialize, RkyvDeserialize, Archive)
 )]
+#[cfg_attr(feature = "enable-rkyv", archive_attr(derive(bytecheck::CheckBytes)))]
 pub enum MemoryStyle {
     /// The actual memory can be resized and moved.
     Dynamic {

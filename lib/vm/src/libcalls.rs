@@ -688,6 +688,7 @@ pub static wasmer_vm_probestack: unsafe extern "C" fn() = PROBESTACK;
     feature = "enable-rkyv",
     derive(RkyvSerialize, RkyvDeserialize, Archive)
 )]
+#[cfg_attr(feature = "enable-rkyv", archive_attr(derive(bytecheck::CheckBytes)))]
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash, Serialize, Deserialize, MemoryUsage)]
 pub enum LibCall {
     /// ceil.f32

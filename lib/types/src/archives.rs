@@ -7,6 +7,7 @@ use std::hash::Hash;
 
 #[derive(Serialize, Deserialize, Archive)]
 /// Rkyv Archivable IndexMap
+#[archive_attr(derive(bytecheck::CheckBytes))]
 pub struct ArchivableIndexMap<K: Hash + Ord + Archive, V: Archive> {
     entries: Vec<(K, V)>,
 }

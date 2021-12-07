@@ -137,6 +137,7 @@ pub struct ModuleInfo {
 /// Mirror version of ModuleInfo that can derive rkyv traits
 #[cfg(feature = "enable-rkyv")]
 #[derive(RkyvSerialize, RkyvDeserialize, Archive)]
+#[archive_attr(derive(bytecheck::CheckBytes))]
 pub struct ArchivableModuleInfo {
     name: Option<String>,
     imports: ArchivableIndexMap<(String, String, u32), ImportIndex>,

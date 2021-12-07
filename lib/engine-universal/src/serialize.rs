@@ -14,7 +14,7 @@ use wasmer_types::{FunctionIndex, LocalFunctionIndex, OwnedDataInitializer, Sign
 
 /// The compilation related data for a serialized modules
 #[derive(MemoryUsage, Archive, RkyvDeserialize, RkyvSerialize)]
-#[rkyv::archive_attr(derive(CheckBytes))]
+#[archive_attr(derive(bytecheck::CheckBytes))]
 pub struct SerializableCompilation {
     pub function_bodies: PrimaryMap<LocalFunctionIndex, FunctionBody>,
     pub function_relocations: PrimaryMap<LocalFunctionIndex, Vec<Relocation>>,
@@ -33,6 +33,7 @@ pub struct SerializableCompilation {
 /// Serializable struct that is able to serialize from and to
 /// a `UniversalArtifactInfo`.
 #[derive(MemoryUsage, Archive, RkyvDeserialize, RkyvSerialize)]
+#[archive_attr(derive(bytecheck::CheckBytes))]
 pub struct SerializableModule {
     pub compilation: SerializableCompilation,
     pub compile_info: CompileModuleInfo,
@@ -54,6 +55,11 @@ impl SerializableModule {
             .serialize_value(self)
             .map_err(to_serialize_error)? as u64;
         let mut serialized_data = serializer.into_serializer().into_inner();
+
+        rkyv::check_archived_value::<Self>(&serialized_data, pos as usize)
+            .map_err(|e| DeserializeError::CorruptedBinary(e.to_string()))
+            .unwrap();
+
         serialized_data.extend_from_slice(&pos.to_le_bytes());
         Ok(serialized_data.to_vec())
     }

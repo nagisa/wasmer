@@ -21,6 +21,7 @@ use wasmer_types::entity::{entity_impl, SecondaryMap};
     feature = "enable-rkyv",
     derive(RkyvSerialize, RkyvDeserialize, Archive)
 )]
+#[cfg_attr(feature = "enable-rkyv", archive_attr(derive(bytecheck::CheckBytes)))]
 #[derive(Copy, Clone, PartialEq, Eq, Hash, PartialOrd, Ord, MemoryUsage)]
 pub struct JumpTable(u32);
 

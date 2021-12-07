@@ -19,6 +19,7 @@ use thiserror::Error;
     feature = "enable-rkyv",
     derive(RkyvSerialize, RkyvDeserialize, Archive)
 )]
+#[cfg_attr(feature = "enable-rkyv", archive_attr(derive(bytecheck::CheckBytes)))]
 #[repr(u32)]
 pub enum TrapCode {
     /// The current stack space was exhausted.

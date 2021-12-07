@@ -22,6 +22,7 @@ thiserror = "1.0"
 serde_bytes = { version = "0.11", optional = true }
 smallvec = "1.6"
 rkyv = { version = "0.7.20", optional = true }
+bytecheck = { version = "0.6", optional = true }
 loupe = "0.1"
 
 [features]
@@ -33,7 +34,7 @@ translator = ["wasmparser"]
 std = ["wasmer-types/std"]
 core = ["hashbrown", "wasmer-types/core"]
 enable-serde = ["serde", "serde_bytes", "wasmer-types/enable-serde"]
-enable-rkyv = ["rkyv", "wasmer-vm/enable-rkyv", "wasmer-types/enable-rkyv"]
+enable-rkyv = ["rkyv", "bytecheck", "wasmer-vm/enable-rkyv", "wasmer-types/enable-rkyv"]
 
 [badges]
 maintenance = { status = "experimental" }

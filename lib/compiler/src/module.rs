@@ -19,6 +19,10 @@ use wasmer_vm::{MemoryStyle, TableStyle};
     feature = "enable-rkyv",
     derive(RkyvSerialize, RkyvDeserialize, Archive)
 )]
+#[cfg_attr(
+    feature = "enable-rkyv",
+    archive_attr(derive(bytecheck::CheckBytes))
+)]
 pub struct CompileModuleInfo {
     /// The features used for compiling the module
     pub features: Features,

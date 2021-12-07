@@ -40,6 +40,10 @@ use std::mem;
     feature = "enable-rkyv",
     derive(RkyvSerialize, RkyvDeserialize, Archive)
 )]
+#[cfg_attr(
+    feature = "enable-rkyv",
+    archive_attr(derive(bytecheck::CheckBytes))
+)]
 pub struct PrimaryMap<K, V>
 where
     K: EntityRef,
