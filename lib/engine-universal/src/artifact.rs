@@ -26,7 +26,26 @@ use wasmer_types::{
 use wasmer_vm::{FunctionBodyPtr, MemoryStyle, TableStyle, VMSharedSignatureIndex, VMTrampoline};
 
 const SERIALIZED_METADATA_LENGTH_OFFSET: usize = 22;
+const MAGIC_HEADER: &'static [u8; SERIALIZED_METADATA_LENGTH_OFFSET] =
+    b"\0wasmer-universal\0\0\0\0\0";
 const SERIALIZED_METADATA_CONTENT_OFFSET: usize = 32;
+
+pub struct UniversalArtifactView<'a> {
+    module: &'a <SerializableModule as rkyv::Archive>::Archived,
+}
+
+impl<'a> UniversalArtifactView<'a> {
+    /// Check if the provided bytes look like a serialized `UniversalArtifact`.
+    pub fn is_deserializable(bytes: &[u8]) -> bool {
+        bytes.starts_with(MAGIC_HEADER)
+    }
+
+    pub unsafe fn new(data: &[u8]) -> Result<Self, DeserializeError> {
+        unsafe {
+            Ok(Self { module: rkyv::archived_root(data) })
+        }
+    }
+}
 
 /// A compiled wasm module, ready to be instantiated.
 #[derive(MemoryUsage)]
@@ -42,13 +61,6 @@ pub struct UniversalArtifact {
 }
 
 impl UniversalArtifact {
-    const MAGIC_HEADER: &'static [u8; 22] = b"\0wasmer-universal\0\0\0\0\0";
-
-    /// Check if the provided bytes look like a serialized `UniversalArtifact`.
-    pub fn is_deserializable(bytes: &[u8]) -> bool {
-        bytes.starts_with(Self::MAGIC_HEADER)
-    }
-
     /// Compile a data buffer into a `UniversalArtifact`, which may then be instantiated.
     #[cfg(feature = "compiler")]
     pub fn new(

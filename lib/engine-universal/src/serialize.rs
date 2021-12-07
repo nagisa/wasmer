@@ -14,6 +14,7 @@ use wasmer_types::{FunctionIndex, LocalFunctionIndex, OwnedDataInitializer, Sign
 
 /// The compilation related data for a serialized modules
 #[derive(MemoryUsage, Archive, RkyvDeserialize, RkyvSerialize)]
+#[rkyv::archive_attr(derive(CheckBytes))]
 pub struct SerializableCompilation {
     pub function_bodies: PrimaryMap<LocalFunctionIndex, FunctionBody>,
     pub function_relocations: PrimaryMap<LocalFunctionIndex, Vec<Relocation>>,

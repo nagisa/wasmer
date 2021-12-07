@@ -81,6 +81,10 @@ fn serialization(c: &mut Criterion) {
                 UniversalArtifact::deserialize(&engine, &serialized).unwrap();
             })
         });
+        let deserialized = unsafe {
+            UniversalArtifact::deserialize(&engine, &serialized).unwrap()
+        };
+        drop(deserialize);
     }
 }
 
